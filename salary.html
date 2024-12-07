@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Increment Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .calculator h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .calculator label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .calculator input {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .calculator button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .calculator button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            max-height: 300px; /* Adjust the height as needed */
+            overflow-y: auto;  /* Make the table scrollable */
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .result-table th, .result-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .result-table th {
+            background-color: #f2f2f2;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #dff0d8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <h2>Salary Increment Calculator</h2>
+        <label for="currentSalary">Current Annual Salary:</label>
+        <input type="number" id="currentSalary" placeholder="Enter your current salary">
+
+        <label for="incrementPercentage">Annual Increment Percentage:</label>
+        <input type="number" id="incrementPercentage" placeholder="Enter increment percentage">
+
+        <label for="years">Number of Years:</label>
+        <input type="number" id="years" placeholder="Enter number of years">
+
+        <button onclick="calculateSalary()">Calculate</button>
+
+        <div class="result">
+            <table class="result-table" id="resultTable">
+                <!-- Table will be populated by JavaScript -->
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculateSalary() {
+            // Get input values
+            var currentSalary = parseFloat(document.getElementById('currentSalary').value);
+            var incrementPercentage = parseFloat(document.getElementById('incrementPercentage').value);
+            var years = parseInt(document.getElementById('years').value);
+
+            // Initialize variables for calculations
+            var totalEarnings = 0;
+            var futureSalary = currentSalary;
+
+            // Get the table element
+            var resultTable = document.getElementById('resultTable');
+
+            // Clear previous results
+            resultTable.innerHTML = '';
+
+            // Add table headers
+            var tableHeader = `
+                <tr>
+                    <th>Year</th>
+                    <th>Salary</th>
+                    <th>Total Earnings</th>
+                </tr>
+            `;
+            resultTable.innerHTML = tableHeader;
+
+            // Loop to calculate salary increment for each year
+            for (var i = 1; i <= years; i++) {
+                totalEarnings += futureSalary;
+
+                // Add a new row for each year
+                var row = `
+                    <tr>
+                        <td>${i}</td>
+                        <td>₹${futureSalary.toFixed(2)}</td>
+                        <td>₹${totalEarnings.toFixed(2)}</td>
+                    </tr>
+                `;
+                resultTable.innerHTML += row;
+
+                // Calculate salary for the next year
+                futureSalary += futureSalary * (incrementPercentage / 100);
+            }
+
+            // Add a summary row showing the total earnings
+            var totalRow = `
+                <tr class="total-row">
+                    <td colspan="2">Total Earnings after ${years} years</td>
+                    <td>₹${totalEarnings.toFixed(2)}</td>
+                </tr>
+            `;
+            resultTable.innerHTML += totalRow;
+        }
+    </script>
+
+</body>
+</html>
+
+
